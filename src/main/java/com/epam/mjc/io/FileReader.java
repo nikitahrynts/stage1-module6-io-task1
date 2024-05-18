@@ -11,24 +11,15 @@ public class FileReader {
 
     public Profile getDataFromFile(File file) {
 
-        BufferedReader bufferedReader = null;
-        try {
-            bufferedReader = new BufferedReader(new java.io.FileReader(file));
+        try (BufferedReader bufferedReader = new BufferedReader(new java.io.FileReader(file))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 parseString(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
+
         return profile;
     }
 
@@ -46,6 +37,8 @@ public class FileReader {
                 break;
             case "Phone:":
                 profile.setPhone(Long.valueOf(elements[1]));
+                break;
+            default:
                 break;
         }
     }
